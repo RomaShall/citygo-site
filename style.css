@@ -1,0 +1,1718 @@
+/* ============================================================================
+   CityGo (www.citygo.ge) — მთავარი სტილების ფაილი
+   ქვემოთ მოცემულ :root ბლოკში შეგიძლიათ ერთ ადგილას შეცვალოთ
+   საიტის ყველა ძირითადი ფერი, შრიფტი და ტექსტის ზომა.
+   ============================================================================ */
+
+:root {
+  /* ---- ფონის ფერები ---- */
+  --bg-primary: #ffffff;               /* მთავარი თეთრი ფონი */
+  --bg-secondary: #f4f5f7;             /* მეორადი სექციების ღია ნაცრისფერი ფონი */
+  --bg-dark: #0a0a0d;                  /* მუქი სექციების ფონი (Hero, ტექნიკური, Footer) */
+
+  /* ---- ბარათებისა და ზედაპირების ფერები ---- */
+  --surface: #ffffff;                  /* ბარათების ფონი ღია სექციებში */
+  --surface-dark: #14161d;             /* ბარათების ფონი მუქ სექციებში */
+  --border-light: #e5e7eb;             /* ჩარჩოების ფერი ღია ფონზე */
+  --border-dark: rgba(255, 255, 255, 0.12); /* ჩარჩოების ფერი მუქ ფონზე */
+
+  /* ---- ტექსტის ფერები ---- */
+  --text-primary: #0b0c10;             /* ძირითადი მუქი ტექსტი */
+  --text-secondary: #525866;           /* მეორადი აღწერის ტექსტი */
+  --text-on-dark: #f8fafc;             /* თეთრი ტექსტი მუქ ფონზე */
+  --text-muted-dark: #a1a7b5;          /* მეორადი ნაცრისფერი ტექსტი მუქ ფონზე */
+
+  /* ---- ბრენდის აქცენტი და LED ნათება ---- */
+  --accent: #ffb800;                   /* მთავარი აქცენტი (ტაქსის LED ოქროსფერი) */
+  --accent-hover: #e5a300;             /* აქცენტის ფერი მაუსის მიტანისას */
+  --accent-text: #0a0a0d;              /* ტექსტის ფერი აქცენტის ღილაკზე */
+  --led-glow: #00d4ff;                 /* ციფრული LED ეკრანის მეორადი ნათება */
+
+  /* ---- შრიფტები და საბაზისო ზომა ---- */
+  --font-heading: 'Noto Sans Georgian', system-ui, -apple-system, 'Segoe UI', sans-serif; /* სათაურების შრიფტი */
+  --font-body: 'Noto Sans Georgian', system-ui, -apple-system, 'Segoe UI', sans-serif;    /* ძირითადი ტექსტის შრიფტი */
+  --base-font-size: 16px;              /* საიტის საბაზისო ტექსტის ზომა */
+
+  /* ---- განლაგების ზომები და დამრგვალება ---- */
+  --container-max: 1200px;             /* კონტენტის მაქსიმალური სიგანე */
+  --taxi-lane-width: 72px;             /* მარჯვენა ტაქსის სქროლ-ზოლის სიგანე (Desktop) */
+  --header-height: 76px;               /* ზედა მენიუს სიმაღლე */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 4px 16px rgba(10, 10, 13, 0.05);
+  --shadow-md: 0 14px 36px rgba(10, 10, 13, 0.08);
+  --shadow-dark: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================================
+   საბაზისო სტილები (Reset & Base)
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--base-font-size);
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  margin: 0;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+/* Anchor scroll offset fixed header-ისთვის */
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + 18px);
+}
+
+/* ============================================================================
+   მთავარი კონტეინერი და მარჯვენა ტაქსის ზოლის თავსებადობა
+   ============================================================================ */
+
+.page-wrapper {
+  min-height: 100vh;
+  padding-right: var(--taxi-lane-width);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 28px;
+}
+
+.container-narrow {
+  max-width: 860px;
+}
+
+/* ============================================================================
+   მარჯვენა ტაქსის სქროლ-ზოლი (Desktop - yellownyctaxi.com-ის შთაგონებით)
+   ============================================================================ */
+
+.taxi-lane {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--taxi-lane-width);
+  z-index: 90;
+  background: linear-gradient(180deg, #11131a 0%, #171922 50%, #11131a 100%);
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.14);
+  user-select: none;
+}
+
+.taxi-road {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* გზის შუა წყვეტილი ხაზი */
+.taxi-road-dashes {
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 184, 0, 0.42) 0px,
+    rgba(255, 184, 0, 0.42) 14px,
+    transparent 14px,
+    transparent 30px
+  );
+  pointer-events: none;
+}
+
+/* სექციების გაჩერების წერტილები */
+.taxi-stops {
+  position: absolute;
+  inset: 36px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.taxi-stop {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid #14161d;
+  transition: transform var(--transition), background-color var(--transition), box-shadow var(--transition);
+}
+
+.taxi-stop::before {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: #0b0c10;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.taxi-stop:hover::before,
+.taxi-stop:focus-visible::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.taxi-stop:hover,
+.taxi-stop.is-active {
+  background: var(--accent);
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px rgba(255, 184, 0, 0.22);
+}
+
+/* მოძრავი ტაქსი */
+.taxi-vehicle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 44px;
+  height: 84px;
+  margin-left: -22px;
+  z-index: 3;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.5));
+}
+
+.taxi-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.taxi-led-screen {
+  fill: var(--led-glow);
+  animation: ledPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes ledPulse {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px var(--led-glow));
+  }
+  50% {
+    opacity: 0.72;
+    filter: drop-shadow(0 0 11px var(--led-glow));
+  }
+}
+
+/* ტაქსის ფარების სინათლე სქროლის მიმართულების მიხედვით */
+.taxi-beam-front,
+.taxi-beam-rear {
+  position: absolute;
+  left: 50%;
+  width: 46px;
+  height: 44px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.taxi-beam-front {
+  top: 76px;
+  background: radial-gradient(ellipse at top, rgba(255, 245, 196, 0.42) 0%, rgba(255, 245, 196, 0) 76%);
+  opacity: 0.85;
+}
+
+.taxi-beam-rear {
+  bottom: 76px;
+  background: radial-gradient(ellipse at bottom, rgba(239, 68, 68, 0.42) 0%, rgba(239, 68, 68, 0) 74%);
+  opacity: 0.2;
+}
+
+.taxi-vehicle.is-scrolling-up .taxi-beam-front {
+  opacity: 0.3;
+}
+
+.taxi-vehicle.is-scrolling-up .taxi-beam-rear {
+  opacity: 0.9;
+}
+
+/* ============================================================================
+   ზედა ნავიგაცია (Header)
+   ============================================================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: rgba(10, 10, 13, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-dark);
+  transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+.site-header.is-scrolled {
+  background: rgba(10, 10, 13, 0.97);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.header-inner {
+  min-height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-on-dark);
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  color: #1a1c24;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-on-dark);
+}
+
+.brand-domain {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.main-nav a {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(248, 250, 252, 0.8);
+  transition: color var(--transition);
+  white-space: nowrap;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  color: var(--accent);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* მობილური ჰამბურგერ ღილაკი */
+.mobile-menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-on-dark);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* მობილური კომპაქტური ტაქსის სქროლ-ზოლი (Desktop-ზე დამალულია) */
+.mobile-taxi-bar {
+  display: none;
+  background: #14161e;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 4px 16px;
+}
+
+.mobile-taxi-track {
+  position: relative;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-taxi-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+}
+
+.mobile-taxi-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  width: 0%;
+  transform: translateY(-50%);
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.mobile-taxi-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 30px;
+  height: 15px;
+  transform: translateY(-50%);
+  will-change: transform;
+}
+
+.mobile-taxi-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* მობილური ჩამოსაშლელი მენიუ */
+.mobile-nav {
+  background: #0d0e13;
+  border-top: 1px solid var(--border-dark);
+  padding-block: 18px 24px;
+}
+
+.mobile-nav-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-nav-inner a:not(.btn) {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--text-on-dark);
+  font-weight: 500;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.mobile-nav-inner a:not(.btn):hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+}
+
+.mobile-nav-inner .btn {
+  margin-top: 8px;
+}
+
+/* ============================================================================
+   ღილაკები (Buttons)
+   ============================================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition), background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-sm {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+}
+
+.btn-lg {
+  padding: 15px 28px;
+  font-size: 0.98rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.btn-accent:hover,
+.btn-accent:focus-visible {
+  background: var(--accent-hover);
+  box-shadow: 0 10px 24px rgba(255, 184, 0, 0.28);
+}
+
+.btn-outline-light {
+  background: transparent;
+  color: var(--text-on-dark);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.btn-outline-light:hover,
+.btn-outline-light:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+.btn-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition);
+}
+
+.btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* ============================================================================
+   1. HERO ბლოკი
+   ============================================================================ */
+
+.hero-section {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(0, 212, 255, 0.14), transparent 42%),
+    radial-gradient(circle at 18% 85%, rgba(255, 184, 0, 0.12), transparent 45%),
+    var(--bg-dark);
+  color: var(--text-on-dark);
+  padding-block: clamp(56px, 7vw, 96px) clamp(64px, 8vw, 108px);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 64px);
+}
+
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(248, 250, 252, 0.9);
+  margin-bottom: 24px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 184, 0, 0.2);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4.1vw, 3.35rem);
+  font-weight: 800;
+  color: var(--text-on-dark);
+  margin-bottom: 22px;
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  color: var(--text-muted-dark);
+  max-width: 56ch;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 42px;
+}
+
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-dark);
+}
+
+.metric-item strong {
+  display: block;
+  font-size: clamp(1.18rem, 1.8vw, 1.48rem);
+  font-weight: 800;
+  color: var(--text-on-dark);
+  margin-bottom: 4px;
+}
+
+.metric-item span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-muted-dark);
+  line-height: 1.45;
+}
+
+/* Hero სურათის კარკასი */
+.hero-media-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-dark);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-dark);
+  aspect-ratio: 4 / 3;
+}
+
+.media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #161822 0%, #202433 100%);
+}
+
+.hero-media-badge {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(10, 10, 13, 0.84);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.badge-led-icon {
+  width: 46px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #ffd54f);
+  color: var(--accent-text);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-media-badge strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text-on-dark);
+}
+
+.hero-media-badge span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted-dark);
+}
+
+/* ============================================================================
+   ზოგადი სექციების სტილები
+   ============================================================================ */
+
+.section {
+  padding-block: clamp(64px, 7.5vw, 108px);
+}
+
+.section-light {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.section-muted {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.section-dark {
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+}
+
+.section-header {
+  max-width: 740px;
+  margin-bottom: clamp(36px, 4.5vw, 54px);
+}
+
+.section-header-center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-header-split {
+  max-width: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.section-header-split > div:first-child {
+  max-width: 680px;
+}
+
+.section-kicker {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.section-kicker-accent {
+  color: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.section-lead {
+  font-size: 1.03rem;
+  color: var(--text-secondary);
+}
+
+.section-dark .section-lead {
+  color: var(--text-muted-dark);
+}
+
+/* ============================================================================
+   2. უპირატესობების ბარათები
+   ============================================================================ */
+
+.cards-grid {
+  display: grid;
+  gap: 22px;
+}
+
+.cards-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(11, 12, 16, 0.22);
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--bg-dark);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.feature-card h3 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================================
+   3. დღისა და ღამის ხილვადობა
+   ============================================================================ */
+
+.segmented-tabs {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: #e9ecf1;
+  border: 1px solid var(--border-light);
+  gap: 4px;
+}
+
+.tab-btn {
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.tab-btn.is-active {
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+  box-shadow: 0 4px 12px rgba(10, 10, 13, 0.18);
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.showcase-grid.is-single {
+  grid-template-columns: minmax(0, 820px);
+}
+
+.showcase-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.showcase-card[hidden] {
+  display: none;
+}
+
+.showcase-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #14161d;
+}
+
+.media-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.media-tag-day {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0b0c10;
+}
+
+.media-tag-night {
+  background: rgba(10, 10, 13, 0.84);
+  color: var(--accent);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+}
+
+.showcase-body {
+  padding: 26px 28px 30px;
+}
+
+.showcase-body h3 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.showcase-body p {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================================
+   4. როგორ მუშაობს (ეტაპები + ფოტო)
+   ============================================================================ */
+
+.split-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.steps-list {
+  list-style: none;
+  margin: 34px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.step-item {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 18px;
+  padding: 22px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.step-num {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--bg-dark);
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-item h3 {
+  font-size: 1.06rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.step-item p {
+  font-size: 0.93rem;
+  color: var(--text-secondary);
+}
+
+.tall-media-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+
+.tall-media-card .media-img {
+  aspect-ratio: 4 / 4.2;
+}
+
+.tall-media-caption {
+  padding: 24px 26px 28px;
+}
+
+.caption-label {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.tall-media-caption strong {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.tall-media-caption p {
+  font-size: 0.9rem;
+  color: var(--text-muted-dark);
+}
+
+/* ============================================================================
+   5. ლოკაციები და განთავსების სფეროები
+   ============================================================================ */
+
+.coverage-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4.5vw, 56px);
+  align-items: center;
+  margin-bottom: clamp(48px, 6vw, 72px);
+}
+
+.coverage-media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 16 / 11;
+}
+
+.check-list {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.check-list li {
+  position: relative;
+  padding-left: 30px;
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.check-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.industries-head {
+  margin-bottom: 28px;
+}
+
+.industries-head h3 {
+  font-size: clamp(1.32rem, 2.2vw, 1.72rem);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.industries-head p {
+  color: var(--text-secondary);
+}
+
+.industries-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.industry-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.industry-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(11, 12, 16, 0.25);
+}
+
+.industry-index {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-text);
+  background: var(--accent);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.industry-card h4 {
+  font-size: 1.03rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.industry-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================================
+   6. ტექნიკური მახასიათებლები და პარტნიორის ბანერი
+   ============================================================================ */
+
+.specs-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: clamp(28px, 4.5vw, 52px);
+  align-items: start;
+}
+
+.specs-table-wrap {
+  background: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  padding: 10px 28px;
+}
+
+.specs-list {
+  margin: 0;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.42fr) minmax(0, 0.58fr);
+  gap: 16px;
+  padding-block: 18px;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.spec-row:last-child {
+  border-bottom: 0;
+}
+
+.spec-row dt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted-dark);
+}
+
+.spec-row dd {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-on-dark);
+}
+
+.specs-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tech-photo-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+  aspect-ratio: 3 / 2;
+  background: var(--surface-dark);
+}
+
+.creative-guide-box {
+  background: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+}
+
+.creative-guide-box h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text-on-dark);
+}
+
+.creative-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.creative-pills span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-on-dark);
+}
+
+.partner-banner {
+  margin-top: clamp(44px, 5.5vw, 68px);
+  padding: clamp(26px, 3.5vw, 38px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, #161822 0%, #1d202d 100%);
+  border: 1px solid rgba(255, 184, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.partner-banner-text {
+  max-width: 660px;
+}
+
+.partner-badge {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.partner-banner h3 {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.partner-banner p {
+  font-size: 0.94rem;
+  color: var(--text-muted-dark);
+}
+
+/* ============================================================================
+   7. ხშირად დასმული კითხვები (FAQ)
+   ============================================================================ */
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.faq-plus {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.faq-plus::before,
+.faq-plus::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.faq-plus::before {
+  width: 14px;
+  height: 2px;
+}
+
+.faq-plus::after {
+  width: 2px;
+  height: 14px;
+}
+
+.faq-question[aria-expanded="true"] .faq-plus::after {
+  transform: translate(-50%, -50%) scaleY(0);
+  opacity: 0;
+}
+
+.faq-answer {
+  padding: 0 24px 22px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* ============================================================================
+   8. საკონტაქტო ფორმა
+   ============================================================================ */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.contact-details {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-detail-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.contact-detail-card a,
+.contact-detail-card span:last-child {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.contact-detail-card a:hover {
+  color: var(--accent-hover);
+}
+
+.contact-form-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 3.5vw, 38px);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-field label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-light);
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 112px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--bg-dark);
+  box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.22);
+}
+
+.form-field input.is-invalid,
+.form-field textarea.is-invalid {
+  border-color: #dc2626;
+}
+
+.form-status {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.form-status.is-success {
+  background: #ecfdf3;
+  color: #067647;
+  border: 1px solid #abefc6;
+}
+
+.form-status.is-error {
+  background: #fef3f2;
+  color: #b42318;
+  border: 1px solid #fecdca;
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
+.site-footer {
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+  border-top: 1px solid var(--border-dark);
+  padding-top: 64px;
+  padding-bottom: 34px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 0.85fr));
+  gap: 36px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.footer-desc {
+  margin-top: 16px;
+  font-size: 0.92rem;
+  color: var(--text-muted-dark);
+  max-width: 34ch;
+}
+
+.footer-links-group h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  margin-bottom: 16px;
+}
+
+.footer-links-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links-group a,
+.footer-links-group span {
+  font-size: 0.9rem;
+  color: var(--text-muted-dark);
+  transition: color var(--transition);
+}
+
+.footer-links-group a:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  padding-top: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  color: var(--text-muted-dark);
+}
+
+.back-to-top {
+  color: var(--text-on-dark);
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+.back-to-top:hover {
+  color: var(--accent);
+}
+
+/* ============================================================================
+   მსუბუქი გამოჩენის ანიმაცია (Scroll Reveal)
+   ============================================================================ */
+
+.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.js-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   სრული ადაპტაცია (Tablet & Mobile Responsive)
+   ============================================================================ */
+
+@media (max-width: 1099px) {
+  /* პატარა დესკტოპსა და პლანშეტზე მარჯვენა ზოლი გადადის ზედა კომპაქტურ ზოლში */
+  .taxi-lane {
+    display: none;
+  }
+
+  .page-wrapper {
+    padding-right: 0;
+  }
+
+  .mobile-taxi-bar {
+    display: block;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+  .hero-grid,
+  .split-layout,
+  .coverage-top,
+  .specs-layout,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid-3,
+  .industries-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --header-height: 68px;
+  }
+
+  .container {
+    padding-inline: 18px;
+  }
+
+  .header-actions .btn {
+    display: none;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .cards-grid-3,
+  .showcase-grid,
+  .industries-grid,
+  .contact-details,
+  .form-row,
+  .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  .spec-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .step-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .step-num {
+    width: 44px;
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .segmented-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding-inline: 10px;
+    font-size: 0.82rem;
+  }
+
+  .hero-media-badge {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 12px;
+  }
+
+  .partner-banner .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .taxi-led-screen {
+    animation: none;
+  }
+
+  .js-ready .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

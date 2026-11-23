@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityGo — ციფრული LED რეკლამა ტაქსების სახურავზე | www.citygo.ge</title>
+  <meta name="description" content="CityGo (www.citygo.ge) — მოძრავი ციფრული LED ეკრანები ტაქსების სახურავზე. ეფექტური გარე რეკლამა ქალაქის ყველაზე აქტიურ წერტილებში 24/7.">
+
+  <!-- =========================================================================
+       შრიფტი (GOOGLE FONTS)
+       შრიფტის შესაცვლელად შეცვალეთ ქვემოთ მოცემული ბმული სასურველი Google Font-ით
+       და შემდეგ style.css-ში განაახლეთ --font-heading და --font-body ცვლადები.
+       ========================================================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- სტილების ფაილი ფარდობითი გზით (მუშაობს როგორც file://-ზე, ისე ჰოსტინგზე) -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       მარჯვენა ტაქსის სქროლ-ზოლი (Desktop - yellownyctaxi.com-ის შთაგონებით)
+       სქროლვისას ტაქსი LED ეკრანით მოძრაობს მარჯვენა გამოყოფილ ზოლში
+       და არ ფარავს საიტის ძირითად ტექსტებს.
+       ========================================================================= -->
+  <aside class="taxi-lane" aria-label="გვერდის სქროლის ინდიკატორი">
+    <div class="taxi-road">
+      <div class="taxi-road-dashes" aria-hidden="true"></div>
+
+      <!-- გზის სექციების მარკერები -->
+      <nav class="taxi-stops" aria-label="სექციებზე სწრაფი გადასვლა">
+        <a href="#hero" class="taxi-stop is-active" data-section="hero" data-label="მთავარი" aria-label="მთავარი"></a>
+        <a href="#advantages" class="taxi-stop" data-section="advantages" data-label="უპირატესობები" aria-label="უპირატესობები"></a>
+        <a href="#visibility" class="taxi-stop" data-section="visibility" data-label="დღე და ღამე" aria-label="დღე და ღამე"></a>
+        <a href="#how-it-works" class="taxi-stop" data-section="how-it-works" data-label="როგორ მუშაობს" aria-label="როგორ მუშაობს"></a>
+        <a href="#coverage" class="taxi-stop" data-section="coverage" data-label="ლოკაციები" aria-label="ლოკაციები"></a>
+        <a href="#specs" class="taxi-stop" data-section="specs" data-label="ტექნიკური" aria-label="ტექნიკური"></a>
+        <a href="#contact" class="taxi-stop" data-section="contact" data-label="კონტაქტი" aria-label="კონტაქტი"></a>
+      </nav>
+
+      <!-- მოძრავი ტაქსი LED ეკრანით (ზემოდან ხედი) -->
+      <div class="taxi-vehicle" id="desktopTaxi" aria-hidden="true">
+        <div class="taxi-beam-front"></div>
+        <div class="taxi-beam-rear"></div>
+        <svg class="taxi-svg" viewBox="0 0 48 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- საბურავები -->
+          <rect x="3" y="16" width="5" height="16" rx="2.5" fill="#111217"/>
+          <rect x="40" y="16" width="5" height="16" rx="2.5" fill="#111217"/>
+          <rect x="3" y="60" width="5" height="16" rx="2.5" fill="#111217"/>
+          <rect x="40" y="60" width="5" height="16" rx="2.5" fill="#111217"/>
+
+          <!-- ძარა -->
+          <rect x="6" y="4" width="36" height="84" rx="13" fill="#FFB800" stroke="#181920" stroke-width="1.5"/>
+
+          <!-- კაპოტისა და საბარგულის ხაზები -->
+          <path d="M12 18C18 15 30 15 36 18" stroke="#D99A00" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M13 76C19 78 29 78 35 76" stroke="#D99A00" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- უკანა და წინა მინა -->
+          <path d="M12 24C12 21 16 19 24 19C32 19 36 21 36 24L35 33H13L12 24Z" fill="#171923"/>
+          <path d="M13 60H35L36 69C36 72 32 74 24 74C16 74 12 72 12 69L13 60Z" fill="#171923"/>
+
+          <!-- სახურავი -->
+          <rect x="11.5" y="32" width="25" height="29" rx="5" fill="#FFCA3A"/>
+
+          <!-- ციფრული LED ეკრანის მოდული სახურავზე -->
+          <rect x="14.5" y="37" width="19" height="19" rx="3.5" fill="#0B0C10" stroke="#1E293B" stroke-width="1.2"/>
+          <rect class="taxi-led-screen" x="16.5" y="39" width="15" height="15" rx="2" fill="#00D4FF"/>
+          <rect x="18.5" y="42.5" width="11" height="2.2" rx="1.1" fill="#0B0C10" opacity="0.85"/>
+          <rect x="18.5" y="46.5" width="7.5" height="2.2" rx="1.1" fill="#0B0C10" opacity="0.65"/>
+          <circle cx="28.5" cy="50.5" r="1.5" fill="#FFFFFF"/>
+
+          <!-- ფარები (წინა — ქვემოთ მიმართული, უკანა — ზემოთ) -->
+          <rect x="10" y="83" width="8" height="3.2" rx="1.6" fill="#FFFDF0"/>
+          <rect x="30" y="83" width="8" height="3.2" rx="1.6" fill="#FFFDF0"/>
+          <rect x="10" y="5.8" width="8" height="2.8" rx="1.4" fill="#EF4444"/>
+          <rect x="30" y="5.8" width="8" height="2.8" rx="1.4" fill="#EF4444"/>
+        </svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       მთავარი კონტეინერი (დესკტოპზე ტოვებს ადგილს მარჯვენა ტაქსის ზოლისთვის)
+       ========================================================================= -->
+  <div class="page-wrapper">
+
+    <!-- ზედა ნავიგაცია (Header) -->
+    <header class="site-header" id="siteHeader">
+      <div class="container header-inner">
+        <a href="#hero" class="brand" aria-label="CityGo მთავარი გვერდი">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="9" fill="currentColor"/>
+              <rect x="8" y="10" width="20" height="9" rx="2.5" fill="#FFB800"/>
+              <circle cx="12.5" cy="14.5" r="1.5" fill="#0A0A0D"/>
+              <rect x="16" y="13.2" width="8.5" height="2.6" rx="1.3" fill="#0A0A0D"/>
+              <path d="M9 24.5C9 22.8 10.3 21.5 12 21.5H24C25.7 21.5 27 22.8 27 24.5V26H9V24.5Z" fill="#FFFFFF"/>
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">CityGo</span>
+            <span class="brand-domain">citygo.ge</span>
+          </span>
+        </a>
+
+        <nav class="main-nav" aria-label="მთავარი მენიუ">
+          <a href="#advantages">უპირატესობები</a>
+          <a href="#visibility">ხილვადობა</a>
+          <a href="#how-it-works">როგორ მუშაობს</a>
+          <a href="#coverage">ლოკაციები</a>
+          <a href="#specs">ტექნიკური</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="#contact" class="btn btn-accent btn-sm">დაგვიკავშირდით</a>
+          <button
+            class="mobile-menu-toggle"
+            id="mobileMenuToggle"
+            type="button"
+            aria-label="მენიუს გახსნა"
+            aria-expanded="false"
+            aria-controls="mobileNav"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- მობილური კომპაქტური ტაქსის სქროლ-ზოლი (ჩანს მხოლოდ პატარა ეკრანებზე) -->
+      <div class="mobile-taxi-bar" aria-hidden="true">
+        <div class="mobile-taxi-track">
+          <div class="mobile-taxi-fill" id="mobileTaxiFill"></div>
+          <div class="mobile-taxi-icon" id="mobileTaxiIcon">
+            <svg viewBox="0 0 36 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="11" y="1" width="13" height="4.5" rx="1.5" fill="#00D4FF" stroke="#0A0A0D" stroke-width="1"/>
+              <path d="M5 10L9 6H25L30 10H33C34.1 10 35 10.9 35 12V14H2V12C2 10.9 3.2 10 5 10Z" fill="#FFB800"/>
+              <circle cx="9" cy="14.5" r="2.5" fill="#0A0A0D"/>
+              <circle cx="27" cy="14.5" r="2.5" fill="#0A0A0D"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- მობილური მენიუ -->
+      <div class="mobile-nav" id="mobileNav" hidden>
+        <div class="container mobile-nav-inner">
+          <a href="#advantages">უპირატესობები</a>
+          <a href="#visibility">ხილვადობა</a>
+          <a href="#how-it-works">როგორ მუშაობს</a>
+          <a href="#coverage">განთავსების ზონები</a>
+          <a href="#specs">ტექნიკური მახასიათებლები</a>
+          <a href="#faq">ხშირად დასმული კითხვები</a>
+          <a href="#contact" class="btn btn-accent btn-full">კონტაქტი</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- =======================================================================
+           1. მთავარი HERO ბლოკი (Uber-ის მინიმალისტური მუქი სტილი)
+           ======================================================================= -->
+      <section class="hero-section" id="hero">
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <div class="eyebrow-pill">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span>მოძრავი ციფრული LED რეკლამა • ქუთაისი </span>
+            </div>
+
+            <h1 class="hero-title">
+              თქვენი რეკლამა <span class="text-accent">მოძრაობაში</span> — 24/7 ხილვადობით
+            </h1>
+
+            <p class="hero-subtitle">
+              CityGo  თქვენი ბრენდი მოძრავია და მუდმივად ჩანს ცენტრალურ გამზირებზე, ბიზნეს უბნებსა და ყველაზე ხალხმრავალ ქუჩებში — დღისითაც და ღამითაც.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#contact" class="btn btn-accent btn-lg">
+                <span> დაკავშირება </span>
+                <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4.5 10H15.5M15.5 10L10.8 5.3M15.5 10L10.8 14.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="#how-it-works" class="btn btn-outline-light btn-lg">როგორ მუშაობს</a>
+            </div>
+
+            <div class="hero-metrics">
+              <div class="metric-item">
+                <strong>24/7</strong>
+                <span>უწყვეტი მოძრაობა და ჩვენება</span>
+              </div>
+              <div class="metric-item">
+                <strong>5000+ ნიტი</strong>
+                <span>მკაფიო გამოსახულება დღის ნებისმიერ დროს</span>
+              </div>
+              <div class="metric-item">
+                <strong>GPS + 5G</strong>
+                <span>დისტანციური მართვა</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-media-frame">
+              <!-- მთავარი Hero ფოტო: ჩაანაცვლეთ images/hero-taxi-led.jpg ფაილით -->
+              <img
+                src="./images/hero-taxi-led.jpg"
+                alt="CityGo ტაქსის სახურავზე დამონტაჟებული ციფრული LED ეკრანი ქალაქში"
+                class="media-img"
+                width="1200"
+                height="900"
+              >
+              <div class="hero-media-badge">
+                <div class="badge-led-icon" aria-hidden="true">LED</div>
+                <div>
+                  <strong>ორმხრივი ციფრული ეკრანი</strong>
+                  <span>ავტომატური სიკაშკაშე • IP65 დაცვა</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           2. უპირატესობები და სერვისის ბარათები
+           ======================================================================= -->
+      <section class="section section-light" id="advantages">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker">რატომ CityGo?</span>
+            <h2 class="section-title">რეკლამა, რომელიც თავად მიდის მომხმარებელთან</h2>
+            <p class="section-lead">
+              სტატიკური ბილბორდებისგან განსხვავებით, მოძრავი ციფრული LED ეკრანი იპყრობს ყურადღებას და ყოველდღიურად ათასობით ქვეითსა და მძღოლს ხვდება ქალაქის ყველა მთავარ ქუჩაზე.
+            </p>
+          </div>
+
+          <div class="cards-grid cards-grid-3">
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M2 12C4.6 7.5 8 5.5 12 5.5C16 5.5 19.4 7.5 22 12C19.4 16.5 16 18.5 12 18.5C8 18.5 4.6 16.5 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+              </div>
+              <h3>მაღალი ვიზუალური ეფექტი</h3>
+              <p>
+                მოძრავი, განათებული ციფრული გამოსახულება ბუნებრივად იპყრობს ყურადღებას ქუჩის ხმაურსა და პიკის საათების საცობებში.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M12 2.5V5M12 19V21.5M4.9 4.9L6.7 6.7M17.3 17.3L19.1 19.1M2.5 12H5M19 12H21.5M4.9 19.1L6.7 17.3M17.3 6.7L19.1 4.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3>დღისა და ღამის ადაპტაცია</h3>
+              <p>
+                ჩაშენებული სინათლის სენსორი ავტომატურად აბალანსებს სიკაშკაშეს — მკვეთრი ფერები მზიან დღეს და სასიამოვნო ნათება ღამით.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M13 3L4 14H12L11 21L20 10H12L13 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3>მყისიერი გაშვება და ცვლილების შესაძლებლობა</h3>
+              <p>
+                არ სჭირდება ბეჭდვა და მონტაჟი. ღრუბლოვანი სისტემით შესაძლებელია რეკლამის განახლება რამდენიმე წუთში.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21C15.5 17.4 18 14.1 18 10.2C18 6.8 15.3 4 12 4C8.7 4 6 6.8 6 10.2C6 14.1 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="1.8"/>
+                  <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+              </div>
+              <h3>გეო-ტარგეტირება და გრაფიკი</h3>
+              <p>
+                მართეთ რეკლამა ჩვენება უბნებისა და საათების მიხედვით — დილით ბიზნეს ზონებში, საღამოს კი გასართობ და სავაჭრო ზონებში.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="6" width="18" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M8 20H16M12 17V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3>ორმხრივი ციფრული ჩვენება</h3>
+              <p>
+                თითოეულ ტაქსზე დამონტაჟებულია ორმხრივი LED პანელი, რაც ქუჩის ორივე ტროტუარიდან და საპირისპირო ზოლიდან უზრუნველყოფს ხილვადობას.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 19V5M4 19H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M8 14L11.5 10.5L14.5 13L19 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3>გამჭვირვალე რეპორტინგი</h3>
+              <p>
+                კამპანიის მიმდინარეობისა და დასრულებისას იღებთ დეტალურ ანგარიშს: გავლილი მარშრუტები, აქტიური საათები და ჩვენებების სტატისტიკა.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           3. დღისა და ღამის ხილვადობა (LEDsi.ge-ის სტილის ვიზუალური შედარება)
+           ======================================================================= -->
+      <section class="section section-muted" id="visibility">
+        <div class="container">
+          <div class="section-header section-header-split">
+            <div>
+              <span class="section-kicker">გამოსახულების ხარისხი ნებისმიერ დროს</span>
+              <h2 class="section-title">მკაფიო გამოსახულება დღის შუქზე და ეფექტური ნათება ღამით</h2>
+            </div>
+
+            <div class="segmented-tabs" role="tablist" aria-label="ხილვადობის რეჟიმის ფილტრი">
+              <button type="button" class="tab-btn is-active" data-filter="all" role="tab" aria-selected="true">ორივე რეჟიმი</button>
+              <button type="button" class="tab-btn" data-filter="day" role="tab" aria-selected="false">დღე</button>
+              <button type="button" class="tab-btn" data-filter="night" role="tab" aria-selected="false">ღამე</button>
+            </div>
+          </div>
+
+          <div class="showcase-grid" id="visibilityGrid">
+            <article class="showcase-card reveal" data-mode="day">
+              <div class="showcase-media">
+                <!-- დღის ხილვადობის ფოტო: ჩაანაცვლეთ images/screen-day.jpg ფაილით -->
+                <img
+                  src="./images/screen-day.jpg"
+                  alt="CityGo LED ეკრანის ხილვადობა დღის მზიან ამინდში"
+                  class="media-img"
+                  width="1200"
+                  height="760"
+                  loading="lazy"
+                >
+                <span class="media-tag media-tag-day">დღის რეჟიმი • 5000+ ნიტი</span>
+              </div>
+              <div class="showcase-body">
+                <h3>კონტრასტული გამოსახულება</h3>
+                <p>
+                  მაღალი სიკაშკაშის SMD LED დიოდები და ანტირეფლექსური დამცავი ფენა უზრუნველყოფს, რომ თქვენი რეკლამა ხილვადი იყოს ნებისმიერი ამინდის მიუხედავად.
+                </p>
+              </div>
+            </article>
+
+            <article class="showcase-card reveal" data-mode="night">
+              <div class="showcase-media">
+                <!-- ღამის ხილვადობის ფოტო: ჩაანაცვლეთ images/screen-night.jpg ფაილით -->
+                <img
+                  src="./images/screen-night.jpg"
+                  alt="CityGo LED ეკრანის ნათება ღამის ქალაქში"
+                  class="media-img"
+                  width="1200"
+                  height="760"
+                  loading="lazy"
+                >
+                <span class="media-tag media-tag-night">ღამის რეჟიმი • ავტო-დაბალანსება</span>
+              </div>
+              <div class="showcase-body">
+                <h3>პრემიუმ გამოსახულება საღამოს ქალაქში</h3>
+                <p>
+                  მზის ჩასვლისთანავე ეკრანი ავტომატურად გადადის ოპტიმალურ ღამის სიკაშკაშეზე — კაშკაშა, სუფთა და თვალისთვის კომფორტული ეფექტით.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           4. როგორ მუშაობს სერვისი (4 ნაბიჯი)
+           ======================================================================= -->
+      <section class="section section-light" id="how-it-works">
+        <div class="container">
+          <div class="split-layout">
+            <div class="split-content">
+              <span class="section-kicker">როგორ მუშაობს</span>
+              <h2 class="section-title">კამპანიის გაშვება 4 მარტივ ეტაპად:</h2>
+              <p class="section-lead">
+                მთლიან ტექნიკურ პროცესს ჩვენ ვმართავთ — თქვენ მხოლოდ გვიზიარებთ მიზანს და შეტყობინებას, რომლის მიტანაც გსურთ ქალაქამდე.
+              </p>
+
+              <ol class="steps-list">
+                <li class="step-item reveal">
+                  <span class="step-num">01</span>
+                  <div>
+                    <h3>მიზნებისა და პაკეტის შერჩევა</h3>
+                    <p>განვსაზღვრავთ კამპანიის ხანგრძლივობას, ჩვენებების სიხშირეს, ავტომობილების რაოდენობასა და სასურველ ზონებს.</p>
+                  </div>
+                </li>
+
+                <li class="step-item reveal">
+                  <span class="step-num">02</span>
+                  <div>
+                    <h3>ვიზუალის მომზადება და ადაპტაცია</h3>
+                    <p>გვაწვდით მზა ბანერს ან მოკლე ანიმაციას — საჭიროების შემთხვევაში, ჩვენი გუნდი დაგეხმარებათ, მასალების მომზადებასა და მის ეკრანის ფორმატზე მორგებაში.</p>
+                  </div>
+                </li>
+
+                <li class="step-item reveal">
+                  <span class="step-num">03</span>
+                  <div>
+                    <h3>დისტანციური გაშვება ქალაქში</h3>
+                    <p>ვიზუალი 5G ღრუბლოვანი პლატფორმიდან მყისიერად იტვირთება აქტიური ტაქსების LED ეკრანებზე და იწყებს ჩვენებას.</p>
+                  </div>
+                </li>
+
+                <li class="step-item reveal">
+                  <span class="step-num">04</span>
+                  <div>
+                    <h3>მონიტორინგი და ანგარიშგება</h3>
+                    <p>კამპანიის დასრულებისას გადმოგცემთ სრულ ანგარიშს აქტივობის, მარშრუტებისა და ჩვენებების რაოდენობის შესახებ.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <div class="split-media reveal">
+              <div class="tall-media-card">
+                <!-- „როგორ მუშაობს“ სექციის ფოტო: ჩაანაცვლეთ images/how-it-works.jpg ფაილით -->
+                <img
+                  src="./images/how-it-works.jpg"
+                  alt="CityGo სარეკლამო კამპანიის ციფრული მართვისა და გაშვების პროცესი"
+                  class="media-img"
+                  width="960"
+                  height="1120"
+                  loading="lazy"
+                >
+                <div class="tall-media-caption">
+                  <span class="caption-label">საშუალო გაშვების დრო</span>
+                  <strong>24 საათზე ნაკლები</strong>
+                  <p>ბრიფიდან ქალაქის ქუჩებში პირველ ჩვენებამდე — ზედმეტი ბიუროკრატიისა და ბეჭდვის გარეშე.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           5. სად ჩანს რეკლამა და განთავსების სფეროები
+           ======================================================================= -->
+      <section class="section section-muted" id="coverage">
+        <div class="container">
+          <div class="coverage-top">
+            <div class="coverage-media reveal">
+              <!-- ქალაქის დაფარვის ფოტო: ჩაანაცვლეთ images/city-coverage.jpg ფაილით -->
+              <img
+                src="./images/city-coverage.jpg"
+                alt="ქალაქის ცენტრალური ქუჩები და CityGo-ს მოძრაობის არეალი"
+                class="media-img"
+                width="1200"
+                height="820"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="coverage-info reveal">
+              <span class="section-kicker">სად ჩანს თქვენი ბრენდი</span>
+              <h2 class="section-title">ქალაქის ყველაზე მაღალი ტრაფიკის ზონებში</h2>
+              <p class="section-lead">
+                ჩვენი პარტნიორი ავტომობილები ყოველდღიურად გადაადგილდებიან ქალაქის მთავარ ქუჩებში — იქ, სადაც რეკლამის კონტაქტის ღირებულება ყველაზე ეფექტურია.
+              </p>
+
+              <ul class="check-list">
+                <li>ცენტრალური გამზირები: რუსთაველი, ჭავჭავაძე, ნიკეა, აღმაშენებელი</li>
+                <li>ბიზნეს ცენტრები, სავაჭრო მოლები და ტურისტული უბნები</li>
+                <li>აეროპორტის ტერიტორია და ძირითადი სატრანსპორტო მიმართულებები</li>
+                <li>პიკის საათების ინტენსიური ნაკადები — ხანგრძლივი ვიზუალური კონტაქტი</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="industries-block">
+            <div class="industries-head">
+              <h3>ვისთვის არის იდეალური CityGo-ს ციფრული რეკლამა?</h3>
+              <p>მოქნილი ფორმატი ნებისმიერი ზომის კამპანიისთვის — ბრენდის ცნობადობიდან ნამდვილ მომხმარებლებამდე.</p>
+            </div>
+
+            <div class="industries-grid">
+              <div class="industry-card reveal">
+                <span class="industry-index">01</span>
+                <h4>დეველოპერები და უძრავი ქონება</h4>
+                <p>ახალი საცხოვრებელი კომპლექსებისა და სპეციალური შეთავაზებების წარმოჩენა მიზნობრივ უბნებში.</p>
+              </div>
+              <div class="industry-card reveal">
+                <span class="industry-index">02</span>
+                <h4>რითეილი და ბრენდული მაღაზიები</h4>
+                <p>ფასდაკლებების, ახალი კოლექციების და ფილიალების გახსნის სწრაფი კომუნიკაცია.</p>
+              </div>
+              <div class="industry-card reveal">
+                <span class="industry-index">03</span>
+                <h4>რესტორნები, კაფეები და დელივერი</h4>
+                <p>ლანჩისა და საღამოს შეთავაზებების ჩვენება ზუსტად აქტიურ საათებში.</p>
+              </div>
+              <div class="industry-card reveal">
+                <span class="industry-index">04</span>
+                <h4>ბანკები, ფინტექი და დაზღვევა</h4>
+                <p>ციფრული პროდუქტების, აპლიკაციებისა და სერვისების მუდმივი ცნობადობა ქალაქში.</p>
+              </div>
+              <div class="industry-card reveal">
+                <span class="industry-index">05</span>
+                <h4>ღონისძიებები და კონცერტები</h4>
+                <p>ივენთების, ფესტივალებისა და პრემიერების დინამიკური ანონსირება.</p>
+              </div>
+              <div class="industry-card reveal">
+                <span class="industry-index">06</span>
+                <h4>კლინიკები, განათლება და ავტოსფერო</h4>
+                <p>ლოკალური და საქალაქო აუდიტორიის მოზიდვა მკაფიო მოწოდებით (CTA).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           6. ტექნიკური მახასიათებლები (მუქი მაღალკონტრასტული ბლოკი)
+           ======================================================================= -->
+      <section class="section section-dark" id="specs">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-kicker section-kicker-accent">ტექნიკური სტანდარტი</span>
+            <h2 class="section-title">თანამედროვე Outdoor LED ინჟინერია</h2>
+            <p class="section-lead">
+              ჩვენი ეკრანები შექმნილია გარე გამოყენებისთვის — უძლებს წვიმას, თოვლს, სიცხეს, ვიბრაციას და ინარჩუნებს სუფთა, მკვეთრ გამოსახულებას.
+            </p>
+          </div>
+
+          <div class="specs-layout">
+            <div class="specs-table-wrap reveal">
+              <dl class="specs-list">
+                <div class="spec-row">
+                  <dt>ეკრანის ტიპი</dt>
+                  <dd>ორმხრივი გარე (Outdoor) P3 / P4 Full-Color SMD LED</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>აქტიური პანელის ზომა</dt>
+                  <dd>960 × 320 მმ (ორივე მხარეს სინქრონული ჩვენება)</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>სიკაშკაშე</dt>
+                  <dd>4500 – 5500 cd/m² (ავტომატური სინათლის სენსორით)</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>დაცვის სტანდარტი</dt>
+                  <dd>IP65 — სრულად წყალგამძლე და მტვერგამძლე კორპუსი</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>კავშირი და მართვა</dt>
+                  <dd>5G LTE + GPS ტრეკინგი + Cloud CMS პლატფორმა</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>კონტენტის ფორმატები</dt>
+                  <dd>JPG, PNG, MP4 (სტატიკური და ანიმაციური რგოლები)</dd>
+                </div>
+                <div class="spec-row">
+                  <dt>სამუშაო ტემპერატურა</dt>
+                  <dd>-20°C-დან +60°C-მდე ნებისმიერ სეზონზე</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="specs-visual reveal">
+              <div class="tech-photo-card">
+                <!-- ტექნიკური LED ეკრანის ფოტო: ჩაანაცვლეთ images/tech-led-screen.jpg ფაილით -->
+                <img
+                  src="./images/tech-led-screen.jpg"
+                  alt="CityGo ტაქსის სახურავის ორმხრივი ციფრული LED ეკრანის ტექნიკური ხედი"
+                  class="media-img"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                >
+              </div>
+
+              <div class="creative-guide-box">
+                <h3>კრეატივის რეკომენდებული პარამეტრები</h3>
+                <div class="creative-pills">
+                  <span>პროპორცია: 3 : 1</span>
+                  <span>სლოტი: 10–15 წამი</span>
+                  <span>ფერები: RGB (მაღალი კონტრასტი)</span>
+                  <span>დისტანციური შეცვლა: მყისიერი</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- პარტნიორობის ბანერი ტაქსოპარკებისთვის -->
+          <div class="partner-banner reveal">
+            <div class="partner-banner-text">
+              <span class="partner-badge">პარტნიორებისთვის</span>
+              <h3>ფლობთ ტაქსოპარკს ან აქტიურ ავტომობილებს?</h3>
+              <p>შემოუერთდით CityGo-ს ქსელს — ეკრანის მონტაჟსა და ტექნიკურ მომსახურებას ჩვენ უზრუნველვყოფთ, თქვენ კი მიიღებთ სტაბილურ დამატებით შემოსავალს.</p>
+            </div>
+            <a href="#contact" class="btn btn-accent btn-lg" id="partnerCtaBtn">გახდი პარტნიორი</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           7. ხშირად დასმული კითხვები (FAQ)
+           ======================================================================= -->
+      <section class="section section-muted" id="faq">
+        <div class="container container-narrow">
+          <div class="section-header section-header-center">
+            <span class="section-kicker">კითხვები და პასუხები</span>
+            <h2 class="section-title">ხშირად დასმული კითხვები</h2>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <button type="button" class="faq-question" aria-expanded="false">
+                <span>რამდენ ხანში შემიძლია რეკლამის გაშვება?</span>
+                <span class="faq-plus" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" hidden>
+                <p>მზა ვიზუალის არსებობის შემთხვევაში, კამპანიის გაშვება შესაძლებელია იმავე ან მომდევნო სამუშაო დღეს. ყველა ეკრანი იმართება დისტანციურად, ღრუბლოვანი სისტემით.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-question" aria-expanded="false">
+                <span>შეგვიძლია თუ არა ვიზუალის ან აქციის შეცვლა კამპანიის დროს?</span>
+                <span class="faq-plus" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" hidden>
+                <p>დიახ, ეს ციფრული LED რეკლამის ერთ-ერთი მთავარი უპირატესობაა. კამპანიის მიმდინარეობისას შეგიძლიათ განაახლოთ ტექსტი, ფასდაკლება ან ვიზუალი ბეჭდვის დამატებითი ხარჯის გარეშე.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-question" aria-expanded="false">
+                <span>მუშაობს თუ არა ეკრანები წვიმაში, თოვლში ან მზიან ამინდში?</span>
+                <span class="faq-plus" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" hidden>
+                <p>დიახ. ეკრანებს აქვს IP65 დაცვის სტანდარტი, რაც სრულად იცავს წყლისა და მტვრისგან, ხოლო 5000+ ნიტამდე სიკაშკაშე მზიან დღეებშიც მკაფიო გამოსახულებას უზრუნველყოფს.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-question" aria-expanded="false">
+                <span>როგორ დავრწმუნდე, რომ ჩემი რეკლამა რეალურად გადის ქალაქში?</span>
+                <span class="faq-plus" aria-hidden="true"></span>
+              </button>
+              <div class="faq-answer" hidden>
+                <p>ყველა ეკრანი აღჭურვილია GPS ტრეკერითა და ჩვენებების აღრიცხვის სისტემით. დამკვეთს გადაეცემა ფოტო/ვიდეო დადასტურება და შემაჯამებელი ანგარიში.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           8. საკონტაქტო ფორმა და ინფორმაცია
+           ======================================================================= -->
+      <section class="section section-light" id="contact">
+        <div class="container">
+          <div class="contact-grid">
+            <div class="contact-info">
+              <span class="section-kicker">დაგვიკავშირდით</span>
+              <h2 class="section-title">დაიწყეთ თქვენი ბრენდის ამოძრავება ქალაქში</h2>
+              <p class="section-lead">
+                მოგვწერეთ თქვენი კომპანიის ან პარტნიორობის შესახებ — ჩვენი გუნდი მოგიმზადებთ პერსონალურ შეთავაზებასა და მედიაგეგმას.
+              </p>
+
+              <div class="contact-details">
+                <div class="contact-detail-card">
+                  <span class="detail-label">ვებგვერდი</span>
+                  <a href="https://www.citygo.ge" target="_blank" rel="noopener noreferrer">www.citygo.ge</a>
+                </div>
+                <div class="contact-detail-card">
+                  <span class="detail-label">ელ-ფოსტა</span>
+                  <a href="mailto:info@citygo.ge">info@citygo.ge</a>
+                </div>
+                <div class="contact-detail-card">
+                  <span class="detail-label">ტელეფონი</span>
+                  <a href="tel:+995500000000">+995 5XX XX XX XX</a>
+                </div>
+                <div class="contact-detail-card">
+                  <span class="detail-label">ლოკაცია</span>
+                  <span>ქუთაისი, საქართველო</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-form-card">
+              <!-- ჰოსტინგზე ატვირთვისას შეგიძლიათ დაამატოთ action="https://formspree.io/f/თქვენი-ID" method="POST" -->
+              <form class="contact-form" id="contactForm" novalidate>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="fullName">სახელი და გვარი *</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="მაგ: სახელი გვარი" required>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="company">კომპანია</label>
+                    <input type="text" id="company" name="company" placeholder="მაგ: საიდენტიფიკაციო ან პირადი ნომერი ">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="phone">ტელეფონი *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+995 5XX XX XX XX" required>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="email">ელ-ფოსტა *</label>
+                    <input type="email" id="email" name="email" placeholder="name@company.ge" required>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label for="topic">მოთხოვნის ტიპი</label>
+                  <select id="topic" name="topic">
+                    <option value="advertising">რეკლამის განთავსება</option>
+                    <option value="partnership">პარტნიორობა / ტაქსოპარკი</option>
+                    <option value="pricing">ფასები და მედიაგეგმა</option>
+                    <option value="other">სხვა შეკითხვა</option>
+                  </select>
+                </div>
+
+                <div class="form-field">
+                  <label for="message">შეტყობინება *</label>
+                  <textarea id="message" name="message" rows="4" placeholder="მოგვწერეთ კამპანიის სასურველი პერიოდი, ეკრანების რაოდენობა ან თქვენი კითხვა..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-accent btn-lg btn-full">მოთხოვნის გაგზავნა</button>
+
+                <div class="form-status" id="formStatus" role="status" aria-live="polite" hidden></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================================================================
+         FOOTER (citygo.ge)
+         ========================================================================= -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="#hero" class="brand brand-light">
+              <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="36" height="36" rx="9" fill="#1A1C24"/>
+                  <rect x="8" y="10" width="20" height="9" rx="2.5" fill="#FFB800"/>
+                  <circle cx="12.5" cy="14.5" r="1.5" fill="#0A0A0D"/>
+                  <rect x="16" y="13.2" width="8.5" height="2.6" rx="1.3" fill="#0A0A0D"/>
+                  <path d="M9 24.5C9 22.8 10.3 21.5 12 21.5H24C25.7 21.5 27 22.8 27 24.5V26H9V24.5Z" fill="#FFFFFF"/>
+                </svg>
+              </span>
+              <span class="brand-text">
+                <span class="brand-name">CityGo</span>
+                <span class="brand-domain">www.citygo.ge</span>
+              </span>
+            </a>
+            <p class="footer-desc">
+              ციფრული LED რეკლამის პლატფორმა ტაქსების სახურავზე — თანამედროვე გარე რეკლამა მოძრაობაში.
+            </p>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>ნავიგაცია</h4>
+            <ul>
+              <li><a href="#advantages">უპირატესობები</a></li>
+              <li><a href="#visibility">დღე-ღამის სპეციფიკა</a></li>
+              <li><a href="#how-it-works">როგორ მუშაობს</a></li>
+              <li><a href="#coverage">ლოკაციები და სფეროები</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>ინფორმაცია</h4>
+            <ul>
+              <li><a href="#specs">ტექნიკური მახასიათებლები</a></li>
+              <li><a href="#faq">ხშირად დასმული კითხვები</a></li>
+              <li><a href="#contact">პარტნიორობა</a></li>
+              <li><a href="#contact">დაგვიკავშირდით</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-group">
+            <h4>კონტაქტი</h4>
+            <ul>
+              <li><a href="https://www.citygo.ge" target="_blank" rel="noopener noreferrer">www.citygo.ge</a></li>
+              <li><a href="mailto:info@citygo.ge">info@citygo.ge</a></li>
+              <li><a href="tel:+995500000000">+995 5XX XX XX XX</a></li>
+              <li><span>ქუთაისი, საქართველო</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© <span id="currentYear">2026</span> CityGo (www.Citygo.ge). ყველა უფლება დაცულია.</p>
+          <a href="#hero" class="back-to-top">ზემოთ დაბრუნება ↑</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- სკრიპტი ფარდობითი გზით -->
+  <script src="./script.js"></script>
+</body>
+</html>
