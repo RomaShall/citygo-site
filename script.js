@@ -21,7 +21,7 @@
     if (!mobileMenuToggle || !mobileNav) return;
     mobileMenuToggle.setAttribute('aria-expanded', String(open));
     mobileMenuToggle.setAttribute('aria-label', open ? 'მენიუს დახურვა' : 'მენიუს გახსნა');
-    mobileNav.hidden = !open;
+    mobileNav.classList.toggle('is-open', open);
   }
 
   if (mobileMenuToggle && mobileNav) {
@@ -62,11 +62,55 @@
   let currentProgress = 0;
   let lastScrollY = window.scrollY || 0;
   let rafId = null;
+  let maxScroll = 0;
 
   function getScrollProgress() {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (docHeight <= 0) return 0;
     return Math.min(1, Math.max(0, window.scrollY / docHeight));
+  }
+
+  // თითოეული სექციისთვის ვითვლით:
+  //  scrollPoint — სქროლის პოზიცია, როცა სექცია აქტიური ხდება
+  //  laneY       — შესაბამისი გაჩერების ცენტრის Y კოორდინატი გზაზე
+  // ტაქსი ამ წერტილებს შორის ინტერპოლირდება, ამიტომ ზუსტად აქტიურ გაჩერებაზე დგება.
+  function measureTaxiLayout() {
+    maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const probeOffset = window.innerHeight * 0.35;
+    const roadTop = desktopTaxi && desktopTaxi.parentElement
+      ? desktopTaxi.parentElement.getBoundingClientRect().top
+      : 0;
+    let prevPoint = 0;
+
+    trackedSections.forEach(function (item, index) {
+      let point = index === 0
+        ? 0
+        : Math.min(maxScroll, Math.max(0, item.el.offsetTop - probeOffset));
+      if (point < prevPoint) point = prevPoint;
+      item.scrollPoint = point;
+      prevPoint = point;
+
+      const rect = item.stop.getBoundingClientRect();
+      item.laneY = rect.top - roadTop + rect.height / 2;
+    });
+  }
+
+  function getLaneY(scrollPos) {
+    const count = trackedSections.length;
+    if (!count) return null;
+    if (scrollPos <= trackedSections[0].scrollPoint) return trackedSections[0].laneY;
+
+    for (let i = 1; i < count; i++) {
+      const from = trackedSections[i - 1];
+      const to = trackedSections[i];
+      if (scrollPos < to.scrollPoint) {
+        const span = to.scrollPoint - from.scrollPoint;
+        const t = span > 0 ? (scrollPos - from.scrollPoint) / span : 1;
+        return from.laneY + (to.laneY - from.laneY) * t;
+      }
+    }
+
+    return trackedSections[count - 1].laneY;
   }
 
   function updateHeaderAndStops() {
@@ -86,12 +130,11 @@
 
     lastScrollY = scrollY;
 
-    // აქტიური სექციის გამოკვეთა გზის წერტილებზე
-    const probeY = scrollY + window.innerHeight * 0.35;
+    // აქტიური სექციის გამოკვეთა გზის წერტილებზე (იგივე წერტილებით, რითაც ტაქსი მოძრაობს)
     let activeId = trackedSections.length ? trackedSections[0].id : null;
 
     for (let i = 0; i < trackedSections.length; i++) {
-      if (trackedSections[i].el.offsetTop <= probeY) {
+      if (scrollY >= trackedSections[i].scrollPoint - 1) {
         activeId = trackedSections[i].id;
       }
     }
@@ -104,11 +147,18 @@
   function renderTaxiPosition(progress) {
     // Desktop: ვერტიკალური გზა მარჯვენა ზოლში
     if (desktopTaxi) {
-      const topPadding = 24;
-      const bottomPadding = 24;
       const taxiHeight = desktopTaxi.offsetHeight || 84;
-      const travelDistance = Math.max(0, window.innerHeight - taxiHeight - topPadding - bottomPadding);
-      const y = topPadding + travelDistance * progress;
+      const laneY = getLaneY(progress * maxScroll);
+      let y;
+
+      if (laneY !== null) {
+        y = laneY - taxiHeight / 2;
+      } else {
+        const padding = 24;
+        const travelDistance = Math.max(0, window.innerHeight - taxiHeight - padding * 2);
+        y = padding + travelDistance * progress;
+      }
+
       desktopTaxi.style.transform = 'translate3d(0, ' + y.toFixed(2) + 'px, 0)';
     }
 
@@ -147,21 +197,34 @@
     }
   }
 
-  window.addEventListener('scroll', onScrollOrResize, { passive: true });
-  window.addEventListener('resize', function () {
+  function relayoutTaxi() {
+    measureTaxiLayout();
     targetProgress = getScrollProgress();
     currentProgress = targetProgress;
+    updateHeaderAndStops();
     renderTaxiPosition(currentProgress);
+  }
+
+  window.addEventListener('scroll', onScrollOrResize, { passive: true });
+  window.addEventListener('resize', function () {
+    relayoutTaxi();
     if (window.innerWidth >= 1100) {
       setMobileMenu(false);
     }
   });
 
+  // გვერდის სიმაღლის ცვლილება (შრიფტები, სურათები, FAQ, ფილტრი) -> წერტილების ხელახალი გაზომვა
+  const pageWrapper = document.querySelector('.page-wrapper');
+  if ('ResizeObserver' in window && pageWrapper) {
+    new ResizeObserver(function () {
+      measureTaxiLayout();
+      onScrollOrResize();
+    }).observe(pageWrapper);
+  }
+  window.addEventListener('load', relayoutTaxi);
+
   // საწყისი მდგომარეობა ჩატვირთვისას
-  targetProgress = getScrollProgress();
-  currentProgress = targetProgress;
-  updateHeaderAndStops();
-  renderTaxiPosition(currentProgress);
+  relayoutTaxi();
 
   /* ---- 3. დღისა და ღამის ხილვადობის ფილტრი ---- */
   const tabButtons = document.querySelectorAll('.segmented-tabs .tab-btn');
@@ -192,25 +255,26 @@
   /* ---- 4. FAQ აკორდეონი ---- */
   const faqQuestions = document.querySelectorAll('.faq-question');
 
+  function setFaqItem(button, open) {
+    button.setAttribute('aria-expanded', String(open));
+    const answer = button.nextElementSibling;
+    if (answer) {
+      answer.classList.toggle('is-open', open);
+    }
+  }
+
   faqQuestions.forEach(function (button) {
     button.addEventListener('click', function () {
       const expanded = button.getAttribute('aria-expanded') === 'true';
-      const answer = button.nextElementSibling;
 
       // დანარჩენი პასუხების დახურვა სუფთა იერისთვის
       faqQuestions.forEach(function (otherBtn) {
         if (otherBtn !== button) {
-          otherBtn.setAttribute('aria-expanded', 'false');
-          if (otherBtn.nextElementSibling) {
-            otherBtn.nextElementSibling.hidden = true;
-          }
+          setFaqItem(otherBtn, false);
         }
       });
 
-      button.setAttribute('aria-expanded', String(!expanded));
-      if (answer) {
-        answer.hidden = expanded;
-      }
+      setFaqItem(button, !expanded);
     });
   });
 
