@@ -63,6 +63,7 @@
   let lastScrollY = window.scrollY || 0;
   let rafId = null;
   let maxScroll = 0;
+  let isDraggingTaxi = false;
 
   function getScrollProgress() {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -111,6 +112,26 @@
     }
 
     return trackedSections[count - 1].laneY;
+  }
+
+  // getLaneY-ის შებრუნებული: გზაზე Y კოორდინატი -> სქროლის პოზიცია (ტაქსის გადათრევისთვის)
+  function getScrollForLaneY(laneY) {
+    const count = trackedSections.length;
+    if (!count) return 0;
+    if (laneY <= trackedSections[0].laneY) return trackedSections[0].scrollPoint;
+
+    for (let i = 1; i < count; i++) {
+      const from = trackedSections[i - 1];
+      const to = trackedSections[i];
+      if (laneY < to.laneY) {
+        const span = to.laneY - from.laneY;
+        const t = span > 0 ? (laneY - from.laneY) / span : 1;
+        return from.scrollPoint + (to.scrollPoint - from.scrollPoint) * t;
+      }
+    }
+
+    // ბოლო გაჩერებაზე ან მის ქვემოთ — გვერდის ბოლომდე
+    return maxScroll;
   }
 
   function updateHeaderAndStops() {
@@ -192,6 +213,13 @@
     targetProgress = getScrollProgress();
     updateHeaderAndStops();
 
+    // გადათრევისას ტაქსი კურსორს დაყოვნების გარეშე მიჰყვება
+    if (isDraggingTaxi) {
+      currentProgress = targetProgress;
+      renderTaxiPosition(currentProgress);
+      return;
+    }
+
     if (!rafId) {
       rafId = window.requestAnimationFrame(animateTaxi);
     }
@@ -225,6 +253,47 @@
 
   // საწყისი მდგომარეობა ჩატვირთვისას
   relayoutTaxi();
+
+  // ტაქსის გადათრევა მაუსით — ცვლის დამალულ სქროლის ზოლს
+  if (desktopTaxi && trackedSections.length) {
+    let grabOffset = 0;
+
+    desktopTaxi.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0) return;
+      event.preventDefault();
+
+      measureTaxiLayout();
+      const rect = desktopTaxi.getBoundingClientRect();
+      grabOffset = event.clientY - (rect.top + rect.height / 2);
+
+      isDraggingTaxi = true;
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      desktopTaxi.classList.add('is-dragging');
+      desktopTaxi.setPointerCapture(event.pointerId);
+    });
+
+    desktopTaxi.addEventListener('pointermove', function (event) {
+      if (!isDraggingTaxi) return;
+      const roadTop = desktopTaxi.parentElement.getBoundingClientRect().top;
+      const laneY = event.clientY - grabOffset - roadTop;
+      window.scrollTo({ top: getScrollForLaneY(laneY), behavior: 'instant' });
+    });
+
+    function endTaxiDrag(event) {
+      if (!isDraggingTaxi) return;
+      isDraggingTaxi = false;
+      desktopTaxi.classList.remove('is-dragging');
+      if (desktopTaxi.hasPointerCapture(event.pointerId)) {
+        desktopTaxi.releasePointerCapture(event.pointerId);
+      }
+    }
+
+    desktopTaxi.addEventListener('pointerup', endTaxiDrag);
+    desktopTaxi.addEventListener('pointercancel', endTaxiDrag);
+  }
 
   /* ---- 3. დღისა და ღამის ხილვადობის ფილტრი ---- */
   const tabButtons = document.querySelectorAll('.segmented-tabs .tab-btn');
